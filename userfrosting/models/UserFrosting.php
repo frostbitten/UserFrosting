@@ -120,9 +120,17 @@ class UserFrosting extends \Slim\Slim {
         // If a user object is set, add the user object as a global Twig variable and set their theme
         if ($this->user) {
             $twig->addGlobal("user", $this->user);
+            // Reset the base theme if necessary
+			$utheme = $this->user->getTheme();
+			$commons_map = $this->config('custom-commons-map');
+			$loader = $twig->getLoader();
+			$tpath = $this->config('themes.path');
+			if(isset($commons_map[$utheme]))
+				$loader->setPaths($tpath . "/" . $commons_map[$utheme][1]);
+			else
+				$loader->setPaths($tpath . "/" . $commons_map['default'][1]);
             // Set path to user's theme, prioritizing over any other themes.
-            $loader = $twig->getLoader();
-            $loader->prependPath($this->config('themes.path') . "/" . $this->user->getTheme());
+            $loader->prependPath($tpath . "/" . $utheme);
         }
     }
     
@@ -164,23 +172,44 @@ class UserFrosting extends \Slim\Slim {
         $twig->addFunction($function_alerts);
         
         // Add Twig functions for including CSS and JS scripts from schema
-        $function_include_css = new \Twig_SimpleFunction('includeCSS', function ($group_name = "common") {
-            // Return array of CSS includes
-            return $this->schema->getCSSIncludes($group_name, $this->site->minify_css);
+        $function_include_css = new \Twig_SimpleFunction('includeCSS', function ($group_name=false) {
+			$utheme = $this->user->getTheme();
+			$commons_map = $this->config('custom-commons-map');
+			 if(isset($commons_map[$utheme]))
+				$custom_common = $commons_map[$utheme][0];
+			 else
+				$custom_common = $commons_map['default'][0];
+			$group_name = !!($group_name) ? $group_name : $custom_common;
+			// Return array of CSS includes 
+			return $this->schema->getCSSIncludes($group_name,$custom_common,$utheme, $this->site->minify_css);
         });
         
         $twig->addFunction($function_include_css);
         
-        $function_include_bottom_js = new \Twig_SimpleFunction('includeJSBottom', function ($group_name = "common") {    
-            // Return array of JS includes
-            return $this->schema->getJSBottomIncludes($group_name, $this->site->minify_js);
+        $function_include_bottom_js = new \Twig_SimpleFunction('includeJSBottom', function ($group_name=false) {
+			$utheme = $this->user->getTheme();
+			$commons_map = $this->config('custom-commons-map');
+			if(isset($commons_map[$utheme]))
+				$custom_common = $commons_map[$utheme][0];
+			else
+				$custom_common = $commons_map['default'][0];
+			$group_name = !!($group_name) ? $group_name : $custom_common;
+			// Return array of JS includes
+            return $this->schema->getJSBottomIncludes($group_name,$custom_common,$utheme, $this->site->minify_js);
         });
         
         $twig->addFunction($function_include_bottom_js);
         
-        $function_include_top_js = new \Twig_SimpleFunction('includeJSTop', function ($group_name = "common") {    
-            // Return array of JS includes
-            return $this->schema->getJSTopIncludes($group_name, $this->site->minify_js);
+        $function_include_top_js = new \Twig_SimpleFunction('includeJSTop', function ($group_name=false) {
+			$utheme = $this->user->getTheme();
+			$commons_map = $this->config('custom-commons-map');
+			if(isset($commons_map[$utheme]))
+				$custom_common = $commons_map[$utheme][0];
+			else
+				$custom_common = $commons_map['default'][0];
+			$group_name = !!($group_name) ? $group_name : $custom_common;
+			// Return array of JS includes
+            return $this->schema->getJSTopIncludes($group_name,$custom_common,$utheme, $this->site->minify_js);
         });
         
         $twig->addFunction($function_include_top_js);

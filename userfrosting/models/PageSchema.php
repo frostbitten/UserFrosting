@@ -45,6 +45,9 @@ class PageSchema {
      * @var array a multidimensional array of js includes, keyed by page group name, each which contains a list of JS files
      */      
     protected $_js_includes_bottom = [];
+	
+	
+	protected $_cached_paths = [];
     
     /**
      * Create a new PageSchema instance.
@@ -54,11 +57,14 @@ class PageSchema {
      * @param string $js_uri the root URI of the css directory
      * @param string $js_path the root URI of the css directory     
      */
-    public function __construct($css_uri, $css_path, $js_uri, $js_path){
+    public function __construct($css_uri, $css_path, $js_uri, $js_path, $custom_commons_map, $themes_list, $min_includes_externals){
         $this->_css_uri =  $css_uri;
         $this->_css_path = $css_path;
         $this->_js_uri =  $js_uri;
         $this->_js_path = $js_path;        
+        $this->_custom_commons_map = $custom_commons_map;
+        $this->_themes_list = $themes_list;
+        $this->_min_includes_externals = $min_includes_externals;
     }
     
     /**
@@ -114,13 +120,15 @@ class PageSchema {
      * @param bool $minify specify whether or not to minify and combine the includes.  If set to `true`, the returned array will have the minified combined asset file instead of the unminified files.
      * @return array an array containing the full paths of the CSS files to be included.
      */
-    public function getCSSIncludes($group_name = "common", $minify = false) {
+    public function getCSSIncludes($group_name, $custom_common, $theme, $minify = false) {
         // Check if the specified group actually exists, otherwise use the common minified file.
         if (isset($this->_css_includes[$group_name]))
-            $minfile = "min/$group_name.min.css";
+            $minfile = "min/$group_name-$theme.min.css";
         else
-            $minfile = "min/common.min.css";
-        return $this->mergeIncludes($this->_css_uri, $this->_css_includes, $group_name, $minfile , $minify);
+            $minfile = "min/$custom_common-$theme.min.css";
+		$thememin = "min/$custom_common-$theme.min.css";
+		$include_externals = true;
+        return $this->mergeIncludes($this->_css_uri, $this->_css_includes, $group_name, $theme, $minfile, $thememin, $minify, 1);
     }
     
     /**
@@ -130,16 +138,16 @@ class PageSchema {
      * @param bool $minify specify whether or not to minify and combine the includes.  If set to `true`, the returned array will have the minified combined asset file instead of the unminified files.
      * @return array an array containing the full paths of the JS files to be included.
      */
-    public function getJSTopIncludes($group_name = "common", $minify = false) {
-        // Check if the specified group actually exists, otherwise use nothing.
-        if (isset($this->_js_includes_top[$group_name]))
-            $minfile = "min/$group_name-top.min.js";
+    public function getJSTopIncludes($group_name, $custom_common, $theme, $minify = false) {
+		if (isset($this->_js_includes_top[$group_name]))
+            $minfile = "min/$group_name-$theme-top.min.js";
         else {
             $minfile = "";
             $minify = false;
         }
-        return $this->mergeIncludes($this->_js_uri, $this->_js_includes_top, $group_name, $minfile, $minify);
-    }    
+		$include_externals = true;
+        return $this->mergeIncludes($this->_js_uri, $this->_js_includes_top, $group_name, $theme, $minfile, "", $minify, 1);
+    } 
 
     /**
      * Get an array containing the full paths to all JS includes to be included in the footer for a specified page group.
@@ -148,13 +156,14 @@ class PageSchema {
      * @param bool $minify specify whether or not to minify and combine the includes.  If set to `true`, the returned array will have the minified combined asset file instead of the unminified files.
      * @return array an array containing the full paths of the JS files to be included.
      */
-    public function getJSBottomIncludes($group_name = "common", $minify = false) {
+    public function getJSBottomIncludes($group_name, $custom_common, $theme, $minify = false) {
         // Check if the specified group actually exists, otherwise use the common minified file.
         if (isset($this->_js_includes_bottom[$group_name]))
-            $minfile = "min/$group_name-bottom.min.js";
+            $minfile = "min/$group_name-$theme-bottom.min.js";
         else
-            $minfile = "min/common-bottom.min.js";
-        return $this->mergeIncludes($this->_js_uri, $this->_js_includes_bottom, $group_name, $minfile, $minify);
+            $minfile = "min/$custom_common-$theme-bottom.min.js";
+		$thememin = "min/$custom_common-$theme-bottom.min.js";
+        return $this->mergeIncludes($this->_js_uri, $this->_js_includes_bottom, $group_name, $theme, $minfile, $thememin, $minify, 1);
     }
     
     /**
@@ -170,25 +179,35 @@ class PageSchema {
      * @param bool $include_externals specify whether or not to include non-local assets as well (e.g., CDN)
      * @return array an array containing the full paths of the files to be included for the specified asset type.
      */
-    private function mergeIncludes($root, $raw, $group_name, $minfile, $minify = false, $include_externals = true){
-        // Combine the common and group-specific includes    
-        if (isset($raw["common"]))
-            $includes = $raw["common"];
+    private function mergeIncludes($root, $raw, $group_name, $theme, $minfile, $thememin, $minify = false, $include_externals = true, $subaction = false){
+		if(array_key_exists($theme, $this->_custom_commons_map))
+			$custom_common = $this->_custom_commons_map[$theme][0];
+		else
+			$custom_common = $this->_custom_commons_map['default'][0];
+		// Combine the common and group-specific includes    
+		if (isset($raw[$group_name]))
+            $includes = $raw[$group_name];
         else
             $includes = [];
-        if ($group_name != "common" && isset($raw[$group_name]))
-            $includes = array_merge($includes, $raw[$group_name]);
- 
-        // For minified, replace with minified file but we still need to include any external includes
+        if ($group_name != $custom_common && isset($raw[$custom_common])){
+			if($subaction=="build")
+				$includes = $includes;
+			else
+				$includes = array_merge($raw[$custom_common], $includes);
+		}
+		// For minified, replace with minified file but we still need to include any external includes
         if ($minify){
-            $includes_parsed = [$root . "/" . $minfile];
-            // Include external files
+			$includes_parsed = []; 
             if ($include_externals) {
                 foreach ($includes as $path){
                     if (strpos($path, 'http') === 0)
                         $includes_parsed[] = $path;
                 }
             }
+            $includes_parsed[] = $root . "/" . $thememin;
+			if($minfile!=$thememin)
+				$includes_parsed[] = $root . "/" . $minfile;
+            // Include external files
         } else {        
             $includes_parsed = [];
             foreach ($includes as $path){
@@ -210,9 +229,13 @@ class PageSchema {
      * @return void
      */
     public function build($debug = false){
-        // Determine path to YUI jar file
-        $yui = __DIR__ . "/yuicompressor-2.4.8.jar";      
-        
+		
+        // Determine path to YUI jar file   
+		if($this->_min_includes_externals)
+			$yui = __DIR__ . "/yuicompressor-2.4.8-aa1c7c3.jar"; //frostbitten's fork that accepts urls
+		else
+			$yui = __DIR__ . "/yuicompressor-2.4.8.jar";
+
         /*
          * In XAMPP and Mac OSX, by default Apache is run under the user 'daemon'.  To grant proper write permissions, run the following shell command:
          * `sudo chown -R daemon:daemon <write_path>`
@@ -227,29 +250,36 @@ class PageSchema {
         
         // For each manifest group, build the corresponding minified, bundled (concatenated) JS and CSS files
         
-        // Build CSS
-        foreach ($this->_css_includes as $group_name => $group){
-            if ($debug) {
-                error_log("Building CSS for page group '$group_name'...");
-            }
-            $this->buildGroup($yui, $this->_css_path, $this->_css_includes, $group_name, "$group_name.min.css", $debug);
-        }
-        
-        // Build head JS
-        foreach ($this->_js_includes_top as $group_name => $group){
-            if ($debug) {
-                error_log("Building top JS for page group '$group_name'...");
-            }
-            $this->buildGroup($yui, $this->_js_path, $this->_js_includes_top, $group_name, "$group_name-top.min.js", $debug);
-        }
+		foreach($this->_themes_list as $theme){
+			if(array_key_exists($theme, $this->_custom_commons_map))
+				$custom_common = $this->_custom_commons_map[$theme][0];
+			else
+				$custom_common = $this->_custom_commons_map['default'][0];
+			// Build CSS
+			foreach ($this->_css_includes as $group_name => $group){
+				if ($debug) {
+					error_log("Building CSS for page group '$group_name'...");
+				}
+				//
+				$this->buildGroup($yui, $this->_css_path, $this->_css_includes, $group_name, $theme, "$group_name-$theme.min.css", $debug, $this->_cached_paths);
+			}
+			
+			// Build head JS
+			foreach ($this->_js_includes_top as $group_name => $group){
+				if ($debug) {
+					error_log("Building top JS for page group '$group_name'...");
+				}
+				$this->buildGroup($yui, $this->_js_path, $this->_js_includes_top, $group_name, $theme, "$group_name-$theme-top.min.js", $debug, $this->_cached_paths);
+			}
 
-        // Build footer JS
-        foreach ($this->_js_includes_bottom as $group_name => $group){
-            if ($debug) {
-                error_log("Building bottom JS for page group '$group_name'...");
-            }
-            $this->buildGroup($yui, $this->_js_path, $this->_js_includes_bottom, $group_name, "$group_name-bottom.min.js", $debug);
-        }
+			// Build footer JS
+			foreach ($this->_js_includes_bottom as $group_name => $group){
+				if ($debug) {
+					error_log("Building bottom JS for page group '$group_name'...");
+				}
+				$this->buildGroup($yui, $this->_js_path, $this->_js_includes_bottom, $group_name, $theme, "$group_name-$theme-bottom.min.js", $debug, $this->_cached_paths);
+			}
+		}
     }
     
     /**
@@ -264,9 +294,10 @@ class PageSchema {
      * @param bool $debug if set to true, write information about the minification process to the error log.
      * @return void
      */  
-    private function buildGroup($yui, $path_root, $includes, $group_name, $minfile, $debug = false){
-        $paths = $this->mergeIncludes($path_root, $includes, $group_name, "", false, false);
-        
+    private function buildGroup($yui, $path_root, $includes, $group_name, $theme, $minfile, $debug = false, $_cached_paths = []){
+		
+        $paths = $this->mergeIncludes($path_root, $includes, $group_name, $theme, "", "", false, $this->_min_includes_externals, "build");
+
         // Test permissions on writing to min file:
         $output_dir = $path_root . "/min/";
         $output_file = $output_dir . $minfile;
@@ -279,26 +310,35 @@ class PageSchema {
                 error_log("----Minifying file '$path'");
             }
             
-            // This will let us run the compressor and detect any errors
-            $descriptorspec = array(
-                0 => array("pipe", "r"),  // stdin
-                1 => array("pipe", "w"),  // stdout
-                2 => array("pipe", "w"),  // stderr
-            );
-            
-            $process = proc_open("export DYLD_LIBRARY_PATH=''; java -jar $yui $path", $descriptorspec, $pipes);
-            
-            $stdout = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            
-            $stderr = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-            
-            // Throw exception if there was an error
-            if ($stderr){
-                throw new \Exception("Unable to minify '$path'.  YUI error message:\n" . $stderr);
+			if(isset($this->_cached_paths[$path])){
+				$stdout = $this->_cached_paths[$path];
+			}else{
+				// This will let us run the compressor and detect any errors
+				$descriptorspec = array(
+					0 => array("pipe", "r"),  // stdin
+					1 => array("pipe", "w"),  // stdout
+					2 => array("pipe", "w"),  // stderr
+				);
+				
+				$process = proc_open("java -jar $yui $path --nomunge", $descriptorspec, $pipes); //export DYLD_LIBRARY_PATH=''; 
+				//if windows server use "java -jar $yui $path --nomunge"		
+				//		  otherwise use "export DYLD_LIBRARY_PATH=''; java -jar $yui $path"				
+
+				$stdout = stream_get_contents($pipes[1]);
+				fclose($pipes[1]);
+				
+				$stderr = stream_get_contents($pipes[2]);
+				fclose($pipes[2]);
+				
+				// Throw exception if there was an error
+				if ($stderr){
+					throw new \Exception("Unable to minify '$path'.  YUI error message:\n" . $stderr);
+				}
+				
+				$this->_cached_paths[$path] = $stdout;
+				
             }
-            
+
             // If successful, append this minified content to the group file
             $group_arr[] = $stdout;
         }

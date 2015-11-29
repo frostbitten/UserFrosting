@@ -64,8 +64,11 @@
             ],
             'user_id_guest'  => 0,
             'user_id_master' => 1,
-            'theme-base'     => "default",
-            'theme-root'     => "root"
+            'theme-root'     => "root",
+            'min_includes_externals'     => false, //set to true if the order of external resources is important
+			'custom-commons-map' => [ // replaces 'theme-base'
+				"default"     => ["common","default"]
+			]
         ]);
     });    
     
@@ -113,8 +116,12 @@
             ],
             'user_id_guest'  => 0,
             'user_id_master' => 1,
-            'theme-base'     => "default",
-            'theme-root'     => "root"
+            'theme-root'     => "root",
+            'min_includes_externals'     => true, //set to true if the order of external resources is important
+			'custom-commons-map' => [ // replaces 'theme-base'
+			
+				"default"     => ["common","default"]
+			]
         ]);
     });
        

@@ -178,7 +178,15 @@ $setting_descriptions = [
 $app->site = new \UserFrosting\SiteSettings($setting_values, $setting_descriptions);
 
 // Create the page schema object
-$app->schema = new \UserFrosting\PageSchema($app->site->uri['css'], $app->config('css.path') , $app->site->uri['js'], $app->config('js.path') );
+$app->schema = new \UserFrosting\PageSchema(
+											$app->site->uri['css'],
+											$app->config('css.path') ,
+											$app->site->uri['js'],
+											$app->config('js.path'),
+											$app->config('custom-commons-map'),
+											$app->site->getThemes(),
+											$app->config('min_includes_externals')
+											);
 
 // Create a guest user, which lets us proceed until we can try to authenticate the user
 $app->setupGuestEnvironment();
