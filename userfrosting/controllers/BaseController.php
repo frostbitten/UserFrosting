@@ -81,7 +81,7 @@ class BaseController {
         $this->_app->response->headers->set("Content-Type", "text/css");
         $css_include = $this->_app->config('themes.path') . "/" . $this->_app->user->getTheme() . "/css/theme.css";
         $this->_app->response->setBody(file_get_contents($css_include));
-    }    
+    }
     
     /**
      * Render the alert stream as a JSON object.
