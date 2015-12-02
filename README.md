@@ -34,6 +34,29 @@ Todo:
 * Allow page container to be fluid via an option
 * Sass the css
 
+Screenshots
+(All page wrappers in in these preview are set to be "continer" rather than "container-fluid", but that's configurable)
+
+Small desktop window
+
+![nyn-dashbaord-small-withdrop.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/nyn-dashbaord-small-withdrop.PNG)
+
+![nyx-dashboard.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/nyx-dashboard.PNG)
+![rootdash0.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/rootdash0.PNG)
+
+![rootdash1.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/rootdash1.PNG)
+
+![rootdash2.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/rootdash2.PNG)
+
+User form in a small desktop window
+
+![userform1.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/userform1.PNG)
+
+Users list can be a grid if you want!
+
+![users-as-grid.PNG](https://raw.githubusercontent.com/frostbitten/UserFrosting/bleeding-edge/screenshots/bleeding-edge/users-as-grid.PNG)
+
+
 -- original readme below --
 # UserFrosting v0.3.1
 http://www.userfrosting.com
