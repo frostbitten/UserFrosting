@@ -36,7 +36,8 @@ Todo:
 * Sass the css
 
 Screenshots
-(All page wrappers in in these preview are set to be "continer" rather than "container-fluid", but that's configurable)
+
+(All page wrappers in these preview are set to be "container" rather than "container-fluid", but that's configurable)
 
 Small desktop window
 
