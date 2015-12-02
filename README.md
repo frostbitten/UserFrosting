@@ -13,7 +13,7 @@ Added:
 * Font Awesome 4.5 (updated from 4.3)
 
 Removed:
-* Select 2 (might be renabled)
+* Select 2 (might be re-enabled)
 * Bootstrap Radio (replaced with bootstrap 4's "button as radio" ability)
 
 **These changes only affect bootstrap 4 templates.
