@@ -13,8 +13,8 @@ Added:
 * Font Awesome 4.5 (updated from 4.3)
 
 Removed:
-* Select 2
-* Bootstrap Radio
+* Select 2 (might be renabled)
+* Bootstrap Radio (replaced with bootstrap 4's "button as radio" ability)
 
 **These changes only affect bootstrap 4 templates.
 The original resources for the default, nyx, and root themes remain untouched.**
