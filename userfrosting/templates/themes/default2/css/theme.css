@@ -483,11 +483,11 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
     border-bottom: 1px dotted #999;
 }
 
-.chat li.left .chat-body {
+.chat li.left .header {
     margin-left: 60px;
 }
 
-.chat li.right .chat-body {
+.chat li.right .header {
     margin-right: 60px;
 }
 

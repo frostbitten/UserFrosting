@@ -5,7 +5,7 @@
  */
 
 body {
-    background-color: #f8f8f8;
+    background-color: #A7B2B9;
 }
 
 .drop-container .drop-content {display:none}
@@ -27,7 +27,6 @@ input[disabled],.disabled {
     position: fixed;
     padding-right: 4px;
 }
-
 
 .bg-white {background-color: #fff; color: #373a3c}
 .dropdown .bg-white a,.dropdown .bg-eee a,.dropdown .bg-ddd a {color: #373a3c}
@@ -63,8 +62,12 @@ body .navbar-fixed-top {
     max-height: 100%;
     padding-bottom: 20px;
 }
+.sidebar-wrapper {
+    position: fixed;
+    padding-right: 4px;
+}
 .sidebar-bg {
-    box-shadow: -1rem 0 0 1rem rgba(217, 83, 79, 0.25),-800 0 0 800 rgba(166, 63, 60, 0.95);
+    box-shadow: -1rem 0 0 1rem rgba(222, 222, 222, 0.07),-800 0 0 800 rgba(101, 103, 105, 0.89);
     width: 250px;
     position: fixed;
     padding-right: 4px;
@@ -84,7 +87,7 @@ body .navbar-fixed-top {
 
 .side-menu a.list-group-item:focus, .side-menu a.list-group-item:hover, .side-menu .side-menu button.list-group-item:focus, .side-menu button.list-group-item:hover {
     color: #fff;
-	background-color: rgb(192, 83, 79);
+    background-color: rgb(39, 39, 39);
 }
 .list-group-item-tight {
     padding: 0.35rem 1.25rem;
@@ -145,31 +148,8 @@ body .navbar-fixed-top {
 	}
 }
 
-@keyframes bouncey {
-	0%  {
-		transform: scale(1);
-		}
-	25%  {
-		transform: scale(0.8);
-	}
-	50%  {
-		transform: scale(1.2);
-	}
-	75%  {
-		transform: scale(1);
-	}
-	100%  {
-		transform: scale(0);
-	}
-	
-}
-.bounce {
-	animation: bouncey 0.4s;
-}
-
-.list-group-item-subcontainer {
-    padding: 0!important;
-    list-style: none;
+.list-group-item-subcontainer{
+	padding:0!important;
 }
  .list-group-item-subcontainer .list-group-item:first-child {
     border-top-left-radius: 0;
@@ -249,39 +229,18 @@ a[data-toggle="collapse"] > .fa.fa-arrow-left {
     padding: 8px 25px 9px;
     min-height: 1px;
     margin: 0;
-    border-left: 1px solid rgba(255, 116, 99, 0.5);
+    border-left: 1px solid rgba(106, 106, 106, 0.5);
 }
 .navbar-userfrosting .navbar-top-links li a.drop-target.drop-enabled {
     background-color: rgba(255, 160, 148, 0.48);
     box-shadow: 0 -3px 0 rgba(173, 78, 61, 0.32) inset;
 }
-.navbar-userfrosting .navbar-top-links li a.drop-target:hover,
-.navbar-userfrosting .navbar-top-links li a.drop-target:focus {
-    background-color: rgba(255, 180, 168, 0.48);
-    box-shadow: 0 -3px 0 rgba(173, 78, 61, 0.32) inset;
-	outline:none;
+.navbar-userfrosting .navbar-top-links li a.drop-target:hover, .navbar-userfrosting .navbar-top-links li a.drop-target:focus,
+.navbar-userfrosting .navbar-top-links li a.drop-target.drop-enabled {
+    background-color: rgb(148, 158, 164);
+    box-shadow: 0 -3px 0 rgba(0, 0, 0, 0.32) inset;
+    outline: none;
 }
-.drop.drop-element.drop-enabled {
-    z-index: 9999;
-}
-
-.input-group.input-group-sm .input-group-addon > .btn {
-    margin: -1px;
-    border: 0;
-    display: block;
-    line-height: 1.5rem;
-    position: relative;
-}
-
-.input-group .input-group-addon > .btn {
-    margin: -1px;
-    border: 0;
-    display: block;
-    line-height: 1.5rem;
-    position: relative;
-}
-
-.nopadding {padding:0!important;}
 
 .drop-element.drop-open.navdrop {
     z-index: 9999999;
@@ -346,14 +305,15 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
     padding: 7px;
 }
 
-.navbar-userfrosting .sidebar .list-group-item {
-    border-bottom: 1px solid rgb(231, 108, 116);
+.navbar-userfrosting .sidebar a.list-group-item {
+    color: #fff;
+    border-bottom: 1px solid rgb(72, 72, 72);
 }
 .sidebar .list-group-item {
     border: none;
 }
 .navbar-userfrosting .sidebar .list-group-item.active {
-    background-color: rgba(238, 238, 238, 0.15);
+    background-color: rgba(238, 238, 238, 0.09);
 }
 
 .navbar-userfrosting .sidebar .nav-second-level li,
@@ -406,6 +366,9 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
 	min-height:60px;
 	position: relative;
 }
+.sidebar-info .card.bg-inverse::before {
+    border-color: transparent;
+}
 .sidebar-info .card.bg-inverse::after {
     border-color: transparent transparent transparent #373A3C;
 }
@@ -417,12 +380,14 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
 .card-header.card-header-tight {
     padding: 0.2rem 1.25rem;
 }
-.sidebar-info.tether-pinned-right.tether-pinned-top.tether-pinned-bottom .card::after {
+.sidebar-info.tether-pinned-right.tether-pinned-top.tether-pinned-bottom .card::after,
+.sidebar-info.tether-pinned-right.tether-pinned-top.tether-pinned-bottom .card::before
+ {
     border-width: 0;
     margin-top: -0; margin-left:0}
-.sidebar-info .card::after {
+.sidebar-info .card:before {
     border: medium solid transparent;
-    border-color: transparent transparent transparent #D9534F;
+    border-color: transparent transparent transparent #F0AD4E;
     border-width: 11px;
     margin-top: -11px;
     left: 100%;
@@ -432,7 +397,21 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
     width: 0;
     position: absolute;
     pointer-events: none;
-	transition:0.3s all ease;
+    transition: 0.3s all ease;
+}
+.sidebar-info .card::after {
+    border: medium solid transparent;
+    border-color: transparent transparent transparent #FFFFFF;
+    border-width: 9px;
+    margin-top: -9px;
+    left: 100%;
+    top: 50%;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    transition: 0.3s all ease;
 }
 
 .clearboth {clear:both}
@@ -502,11 +481,11 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
     border-bottom: 1px dotted #999;
 }
 
-.chat li.left .chat-body {
+.chat li.left .header {
     margin-left: 60px;
 }
 
-.chat li.right .chat-body {
+.chat li.right .header {
     margin-right: 60px;
 }
 
@@ -746,8 +725,6 @@ tr.card {
 		padding: 0;
 		width: 100%;
 	}
-	body .navbar-fixed-top {
-	}
 	body .navbar-userfrosting .navbar-top-links >li >a {
 		padding: 0.4rem;
 		min-height: 50px;
@@ -800,4 +777,107 @@ tr.card {
 .card-primary {
     background-color: #337AB7;
     border-color: #337AB7;
+}
+
+/* Links */
+.nyx-cover a,
+.nyx-cover a:focus,
+.nyx-cover a:hover {
+  color: #fff;
+}
+/* Custom default button */
+.nyx-cover .btn-default,
+.nyx-cover .btn-default:hover,
+.nyx-cover .btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+/*
+ * Base structure
+ */
+html.nyx-cover,
+.nyx-cover body {
+  height: 100%;
+  background-color: #333;
+}
+.nyx-cover body {
+  padding-top: 0;
+  padding-bottom: 0;  
+}
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.nyx-cover .site-wrapper {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 100 rgba(0,0,0,.5);
+          box-shadow: inset 0 0 100 rgba(0,0,0,.5);
+}
+.nyx-cover .site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.nyx-cover .cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+/* Padding for spacing */
+.nyx-cover .inner {
+  padding: 30px;
+}
+/*
+ * Header
+ */
+.nyx-cover .masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.nyx-cover .masthead-nav > li {
+  display: inline-block;
+}
+.nyx-cover .masthead-nav > li + li {
+  margin-left: 20px;
+}
+.nyx-cover .masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+.nyx-cover .masthead-nav > li > a:hover,
+.nyx-cover .masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.nyx-cover .masthead-nav > .active > a,
+.nyx-cover .masthead-nav > .active > a:hover,
+.nyx-cover .masthead-nav > .active > a:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+/*
+ * Cover
+ */
+.nyx-cover .cover {
+  padding: 0 20px;
+}
+.nyx-cover .cover .btn-lg {
+  padding: 10 20px;
+  font-weight: bold;
+}
+/*
+ * Footer
+ */
+.nyx-cover .mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
 }
