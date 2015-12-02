@@ -1,6 +1,6 @@
 # UserFrosting v0.3.1 fork: bleeding edge
 
-This fork aims to get people ready for bootstrap 4, whenever that comes out. There are big differences so an early start may prove the best bet for you! Note that Bootstrap 4 and this fork are both mostly-complete. There are css classes in Bootstrap 4 that should exist but don't... yet. I have filled some of the gaps myself but I am sure they will be covered in the full release of BS4. Feel free to report any of these gaps here and we can fill them. As for the layouts.. they are mostly complete. Small things here and there haven't been converted to the Bootstrap 4 format and will behave akwardly, but those are few and far between.
+This fork aims to get people ready for Bootstrap 4, whenever that comes out. There are big differences so an early start may prove the best bet for you! Note that Bootstrap 4 and this fork are both mostly-complete. There are css classes in Bootstrap 4 that should exist but don't... yet. I have filled some of the gaps myself but I am sure they will be covered in the full release of BS4. Feel free to report any of these gaps here and we can fill them. As for the layouts.. they are mostly complete. Small things here and there haven't been converted to the Bootstrap 4 format and will behave akwardly, but those are few and far between.
 
 Download, start playing around in the templates, and enjoy!
 
