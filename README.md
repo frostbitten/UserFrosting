@@ -19,8 +19,17 @@ Removed:
 **These changes only affect bootstrap 4 templates.
 The original resources for the default, nyx, and root themes remain untouched.**
 
+Issues Addressed by this fork:
+* Desktop window size can be small without going mobile
+* Form errors show in tooltips, rather than pushing all the other form elements around
+* Sidebar scrolls when too big to fit in window
+* Dropdown menus can be boostrap, or "tethered" for extra position features
+* Users list can be viewed as grid or a table
+* And more!
+
 Todo:
 * Finish updating form feedbacks
+* Make extra sidebar tools on users page work.
 * Edit dashboard alert's list of resources to current
 * Allow page container to be fluid via an option
 * Sass the css
