@@ -1,5 +1,26 @@
-# UserFrosting v0.3.1
+# UserFrosting v0.3.1 fork: bleeding edge
 
+Added:
+* Bootstrap 4
+* jQuery 3
+* jQuery Match Heights
+* Tether
+* Tether Drop
+* Font Awesome 4.5
+
+Removed:
+* Select 2
+* Bootstrap Radio
+
+**These changes only affect bootstrap 4 templates. The original resources for the default, nyx, and root themes remain untouched.**
+
+Todo:
+* Finish updating form feedbacks
+* Allow page container to be fluid via an option
+* Sass the css
+
+-- original readme below --
+# UserFrosting v0.3.1
 http://www.userfrosting.com
 
 If you simply want to show that you like this project, or want to remember it for later, you should **star**, not **fork**, this repository.  Forking is only for when you are ready to create your own copy of the code to work on.
