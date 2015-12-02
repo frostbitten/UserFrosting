@@ -23,7 +23,7 @@ Issues Addressed by this fork:
 * Desktop window size can be small without going mobile
 * Form errors show in tooltips, rather than pushing all the other form elements around
 * Sidebar scrolls when too big to fit in window
-* Dropdown menus can be boostrap, or "tethered" for extra position features
+* Dropdown menus can be bootstrap, or "tethered" for extra position features
 * Users list can be viewed as grid or a table
 * And more!
 
