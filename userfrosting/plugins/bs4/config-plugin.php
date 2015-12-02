@@ -56,11 +56,6 @@
     $app->schema->registerJS("common2", "../bs4-plugin/js/userfrosting.js");
     //$app->schema->registerJS("common2", "../js2/uf2.js");
 	
-    //$app->schema->registerJS("install-master", "https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js");
-    //$app->schema->registerJS("loggedout2", "https://cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js");
-    //$app->schema->registerJS("loggedout", "../js2/DeviceOrientationControls.js");
-    //$app->schema->registerJS("loggedout", "../js2/CSS3DRenderer.js");
-    //$app->schema->registerJS("loggedout", "../js2/three-config.js");
 	
     // Dashboard JS
     $app->schema->registerJS("dashboard2", "lib/raphael.js");
@@ -72,31 +67,7 @@
     
     // Groups JS
     $app->schema->registerJS("group2", "../bs4-plugin/js/widget-groups.js");
-    $app->schema->registerJS("menus", "../bs4-plugin/js/widget-groups.js");
 
-	/* 
-	
-	$app->hook('twig.before.getloader', function () use ($app){
-	if(		(  
-					$app->user->id == $app->config('user_id_master')
-				&&	$app->config('theme-root') == "root2"
-			)
-		||	
-					in_array($app->user->getTheme(),["default2","root2","nyx2"])
-	  ){
-		
-		error_log('1 reinit some twig stuff');
-		error_log($app->user->getTheme());
-		
- 		$app->configureMode('dev', function () use ($app) {			
-			$app->config([
-							'theme-base'     => "default2"
-			]);
-		}); 
-		$app->setupTwig();
-		//error_log(__DIR__ . '/templates/themes');
-		}
-	}); */
 	
 	
 ?>
