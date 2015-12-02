@@ -23,6 +23,7 @@ Issues Addressed by this fork:
 * Desktop window size can be small without going mobile
 * Form errors show in tooltips, rather than pushing all the other form elements around
 * Sidebar scrolls when too big to fit in window
+* Sidebar tethered cards can be used in the empty screen realestate below the sidebar
 * Dropdown menus can be bootstrap, or "tethered" for extra position features
 * Users list can be viewed as grid or a table
 * And more!
