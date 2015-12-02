@@ -1,0 +1,156 @@
+
+<ul class="nav navbar-top-links">
+    <li class="drop-container" data-class="dropdown-messages" data-theme="drop-theme-arrows-bounce">
+        <a class="drop-target" href="#">
+            <i class="fa fa-envelope fa-fw"></i>
+        </a>
+        <div class="bg-white drop-content">
+			<a href="#" class="dropdown-item">
+				<div>
+					<strong>John Smith</strong>
+					<span class="pull-right text-muted">
+						<em>Yesterday</em>
+					</span>
+				</div>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</p>
+			</a>
+            <div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item">
+				<div>
+					<strong>John Smith</strong>
+					<span class="pull-right text-muted">
+						<em>Yesterday</em>
+					</span>
+				</div>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</p>
+			</a>
+            <div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item">
+				<div>
+					<strong>John Smith</strong>
+					<span class="pull-right text-muted">
+						<em>Yesterday</em>
+					</span>
+				</div>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</p>
+			</a>
+            <div class="dropdown-divider divider-tight"></div>
+			<a  class="dropdown-item text-center" href="#">
+				<strong>Read All Messages</strong>
+				<i class="fa fa-angle-right"></i>
+			</a>
+        </div>
+        <!-- /.dropdown-messages -->
+    <!-- /.dropdown -->
+    <li class="drop-container" data-class="dropdown-tasks" data-theme="drop-theme-arrows-bounce">
+        <a class="drop-target"  href="#">
+            <i class="fa fa-tasks fa-fw"></i>
+        </a>
+        <div class="bg-white drop-content">
+                <a href="#" class="dropdown-item clearfix">
+                    <div>
+                        <p>
+                            <strong>Task 1</strong>
+                            <span class="pull-right text-muted">40% Complete</span>
+                        </p>
+						<progress class="progress progress-success" value="40" max="100">40%<span class="sr-only"> Complete (success)</span></progress>
+                    </div>
+                </a>
+				<div class="dropdown-divider divider-tight"></div>
+                <a href="#" class="dropdown-item clearfix">
+                    <div>
+                        <p>
+                            <strong>Task 2</strong>
+                            <span class="pull-right text-muted">20% Complete</span>
+                        </p>
+						<progress class="progress progress-striped" value="20" max="100">20%<span class="sr-only"> Complete</span></progress>
+                    </div>
+                </a>
+				<div class="dropdown-divider divider-tight"></div>
+                <a href="#" class="dropdown-item clearfix">
+                    <div>
+                        <p>
+                            <strong>Task 3</strong>
+                            <span class="pull-right text-muted">60% Complete</span>
+                        </p>
+						<progress class="progress progress-striped progress-warning" value="60" max="100">60%<span class="sr-only"> Complete (warning)</span></progress>
+                    </div>
+                </a>
+				<div class="dropdown-divider divider-tight"></div>
+                <a href="#" class="dropdown-item clearfix">
+                    <div>
+                        <p>
+                            <strong>Task 4</strong>
+                            <span class="pull-right text-muted">80% Complete</span>
+                        </p>
+						<progress class="progress progress-striped progress-danger" value="80" max="100">80%<span class="sr-only"> Complete (danger)</span></progress>
+                    </div>
+                </a>
+				<div class="dropdown-divider divider-tight"></div>
+                <a  class="dropdown-item text-center" href="#">
+                    <strong>See All Tasks</strong>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+        </div>
+        <!-- /.dropdown-tasks -->
+    <!-- /.dropdown -->
+    <li class="drop-container" data-class="dropdown-alerts" data-theme="drop-theme-arrows-bounce">
+        <a class="drop-target" href="#">
+            <i class="fa fa-bell fa-fw"></i>
+        </a>
+        <div class="bg-white drop-content">
+			<a href="#" class="dropdown-item clearfix">
+				<div>
+					<i class="fa fa-comment fa-fw"></i> New Comment
+					<span class="pull-right text-muted small">4 minutes ago</span>
+				</div>
+			</a>
+			<div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item clearfix">
+				<div>
+					<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+					<span class="pull-right text-muted small">12 minutes ago</span>
+				</div>
+			</a>
+			<div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item clearfix">
+				<div>
+					<i class="fa fa-envelope fa-fw"></i> Message Sent
+					<span class="pull-right text-muted small">4 minutes ago</span>
+				</div>
+			</a>
+			<div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item clearfix">
+				<div>
+					<i class="fa fa-tasks fa-fw"></i> New Task
+					<span class="pull-right text-muted small">4 minutes ago</span>
+				</div>
+			</a>
+			<div class="dropdown-divider divider-tight"></div>
+			<a href="#" class="dropdown-item clearfix">
+				<div>
+					<i class="fa fa-upload fa-fw"></i> Server Rebooted
+					<span class="pull-right text-muted small">4 minutes ago</span>
+				</div>
+			</a>
+			<div class="dropdown-divider divider-tight"></div>
+			<a class="dropdown-item clearfix text-center" href="#">
+				<strong>See All Alerts</strong>
+				<i class="fa fa-angle-right"></i>
+			</a>
+        </div>
+        <!-- /.dropdown-alerts -->
+    <!-- /.dropdown -->
+    <li class="drop-container" data-class="dropdown-user" data-theme="drop-theme-arrows-bounce">
+        <a class="drop-target" href="#">
+            <i class="{{user.icon}} fa-fw"></i> {{user.user_name}}
+        </a>
+        <div  class="bg-white drop-content">
+            <a class="dropdown-item clearfix" href="{{site.uri.public}}/account/settings"><i class="fa fa-gear fa-fw"></i> Settings</a>
+			<div class="dropdown-divider divider-tight"></div>
+            <a class="dropdown-item clearfix"  href="{{site.uri.public}}/account/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </div>
+        <!-- /.dropdown-user -->
+    <!-- /.dropdown -->
+</ul>
+<!-- /.navbar-top-links -->

@@ -1,0 +1,32 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-userfrosting navbar-fixed-top container center-block" role="navigation" style="margin-bottom: 0">
+	<div class="bg-default" id="topbar">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="pull-left navbar-header">
+					<button type="button" class="navbar-toggle hidden-sm-up" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="fa fa-bars"></span>
+					</button>
+					<a class="m-l navbar-brand" href="{{site.uri.public}}">{{site.site_title}}</a>
+				</div>
+				<!-- /.navbar-header -->
+				{% include 'components/dashboard/menus/topbar.twig' %}
+			</div>
+		</div>
+    </div>
+	<div class="">
+		<div class="sidebar-wrapper bg-default">
+			<div class="navbar-default navbar-userfrosting sidebar bg-default" role="navigation">
+				{% include 'components/dashboard/menus/sidebar.twig' %}
+			</div>
+			<!-- /.navbar-static-side -->        
+			<div id="sidebarfeed" class="sidebar-feed hidden-xs-down"><div id="sinfo-0" class="tether-sidebar-helper"></div></div>   
+		</div>
+    </div>
+ </nav>
+ <div class="container">
+	 <div class="row">
+			<div class="sidebar-bg bg-default"></div>
+		</div>
+	</div>

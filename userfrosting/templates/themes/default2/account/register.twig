@@ -1,0 +1,81 @@
+{% extends "layouts/layout-jumbotron.twig" %}
+{% set page_group = "loggedout" %}
+
+{% block page %}
+    {# By putting this in a special block, we ensure that it will be set AFTER the default values are set in the parent template, 
+    but BEFORE the page itself is rendered. #}
+    
+    {% set page = page | merge({
+        "title"       : "Register",
+        "description" : "Register for a new UserFrosting account.",
+        "active_page" : "account/register"
+    }) %}    
+
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+<h1>Let's get started!</h1>
+<p class="lead">Registration is fast and simple.</p>
+{% include 'components/common/alerts.twig' %}
+{% include 'components/common/user-public-register-form.twig' %}
+{% include 'components/jumbotron/jumbotron-links.twig' %}
+{% endblock %}
+
+{% block fragments %}
+    <div id="tos" class="modal fade" tabindex="-1" data-width="760" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Terms and Conditions for {{site.site_title}}</h4>
+        </div>
+        <div class="modal-body">
+            {% include 'components/common/tos.twig' %}	
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-primary">Got it!</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_scripts %} 
+    <script>
+        $(document).ready(function() {           
+            // Process form 
+            ufFormSubmit(
+                $("form[name='register']"),
+                {{ validators | raw }},
+                $("#userfrosting-alerts"),
+                function(data, statusText, jqXHR) {
+                    // Forward to login page on success
+                    window.location.replace(site['uri']['public'] + "/account/login");
+                },
+                function() {
+                    // Reload captcha
+                    $("#captcha").captcha();
+                }
+            );
+        });    
+        
+        // This plugin reloads the captcha in the specified field
+        (function( $ ) {
+            $.fn.captcha = function() {
+                var field = $(this);
+                console.log("Reloading captcha");
+                
+                var img_src = site['uri']['public'] + "/account/captcha?" + new Date().getTime();
+                
+                return $.ajax({  
+                  type: "GET",  
+                  url: img_src,  
+                  dataType: "text"
+                }).then(function(data, statusText, jqXHR) {  // Pass the deferral back
+                    field.attr('src', data);
+                    var target = field.data('target');
+                    $(target).val("");
+                    return data;
+                });
+            };
+        }( jQuery ));        
+        
+    </script>
+{% endblock %}

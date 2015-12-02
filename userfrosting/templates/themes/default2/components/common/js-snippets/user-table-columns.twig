@@ -1,0 +1,90 @@
+{# This contains a series of <script> blocks, each of which is a client-side Handlebars template. #}
+{% verbatim %}
+<script id="user-table-column-info" type="text/x-handlebars-template">
+    <td class="card-header" data-text="{{user.user_name}}">
+        <strong>
+            <a href="{{site.uri.public}}/users/u/{{user.id}}">{{user.user_name}} ({{user.display_name}})</a>
+        </strong><br>
+        <div class="label label-warning">
+            <i>{{user.title}}</i>
+        </div>
+        <div class="label label-default">
+            <i class="fa fa-envelope"></i> <a href="mailto:{{user.email}}">{{user.email}}</a>
+        </div>
+    </td>
+</script>
+
+<script id="user-table-column-registered-since" type="text/x-handlebars-template">
+    {{#if user.sign_up_time }}    
+    <td class="card-block re-sign-up-time" data-num="{{dateFormat user.sign_up_time format='x'}}">
+        {{dateFormat user.sign_up_time format="dddd"}} <br>{{dateFormat user.sign_up_time format="MMM Do, YYYY h:mm a"}}
+    {{ else }}
+    <td class="card-block re-sign-up-time" data-num="0">
+            <i>Unknown</i>
+    {{/if }}    
+    </td>
+</script>
+
+<script id="user-table-column-last-sign-in" type="text/x-handlebars-template">
+    {{#if user.last_sign_in_time }}
+    <td class="card-block re-last-sign-in-time" data-num="{{dateFormat user.last_sign_in_time format='x'}}">
+        {{dateFormat user.last_sign_in_time format="dddd"}}<br>{{dateFormat user.last_sign_in_time format="MMM Do, YYYY h:mm a"}}
+    </td>
+    {{ else }}
+    <td class="card-block re-last-sign-in-time" data-num="0">
+            <i>Brand new!</i>
+    </td>
+    {{/if }}
+</script>
+
+<script id="user-table-column-actions" type="text/x-handlebars-template">
+    <td class="card-footer">
+        <div class="dropdown">
+            {{#ifCond user.flag_enabled 0 }}
+                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+                    Disabled
+                    <span class="caret"></span>
+                </button>
+            {{ else }}
+                {{#ifCond user.flag_verified 0 }}
+                    <button type="button" class="btn btn-sm btn-warning dropdown-toggle" data-toggle="dropdown">
+                        <span class="not-table-grid">Unactivated</span>
+                        <span class="only-table-grid"><i class="fa fa-times"></i></span>
+                        <span class="caret"></span>
+                    </button>            
+                {{ else }}
+                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown">
+                        <span class="not-table-grid">Active</span>
+                        <span class="only-table-grid"><i class="fa fa-check"></i></span>
+                        <span class="caret"></span>
+                    </button>            
+                {{/ifCond }}
+            {{/ifCond }}
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                {{#ifCond user.flag_verified 0 }}
+                    <a href="#" data-id="{{user.id}}" class="js-user-activate dropdown-item"">
+                    <i class="fa fa-bolt"></i> Activate user
+                    </a>
+                {{/ifCond }}
+                    <a href="#" data-id="{{user.id}}" class="js-user-edit dropdown-item" data-target="#dialog-user-edit" data-toggle="modal">
+                    <i class="fa fa-edit"></i> Edit user
+                    </a>
+                    <a href="#" data-id="{{user.id}}" class="js-user-password dropdown-item" data-target="#dialog-user-password" data-toggle="modal">
+                    <i class="fa fa-key"></i> Change password
+                    </a>
+                {{#ifCond user.flag_enabled 1 }}
+                    <a href="#" data-id="{{user.id}}" class="js-user-disable dropdown-item">
+                    <i class="fa fa-minus-circle"></i> Disable user
+                    </a>
+                {{ else }}
+                    <a href="#" data-id="{{user.id}}" class="js-user-enable dropdown-item">
+                    <i class="fa fa-plus-circle"></i> Enable user
+                    </a> 
+                {{/ifCond }}
+                    <a href="#" data-id="{{user.id}}" class="js-user-delete dropdown-item" data-user_name="{{user.user_name}}" data-target="#dialog-user-delete" data-toggle="modal">
+                    <i class="fa fa-trash-o"></i> Delete user</a>
+            </div>
+        </div>
+    </td>
+</script>
+{% endverbatim %}

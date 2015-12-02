@@ -1,0 +1,18 @@
+{% extends "layouts/layout-dashboard.twig" %}
+
+{# Set page properties (page.*) here. #}
+{% block page %}
+    {# By putting this in a special block, we ensure that it will be set AFTER the default values are set in the parent template, 
+    but BEFORE the page itself is rendered. #}    
+    {% set page = page | merge({
+        "title"       : "404 Error",
+        "description" : "We couldn't deliver.  We're sorry."
+    }) %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+        <h1>Error 404</h1>
+        <img src="{{site.uri.image}}/fry.png" class="img-fluid center-block">
+        <br><br>
+        <p class="lead">Either way, click <a href="{{site.uri.public}}">here</a> to return to the front page.</p>
+{% endblock %}

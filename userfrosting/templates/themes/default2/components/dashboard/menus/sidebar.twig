@@ -1,0 +1,48 @@
+<div class="sidebar-nav navbar-collapse">
+    <div class="list-group side-menu" id="side-menu">
+        <div class="list-group-item sidebar-search">
+            <div class="input-group input-group-sm custom-search-form">
+                <input type="text" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="button">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+            </div>
+            <!-- /input-group -->
+        </div>
+            <a class="list-group-item" href="{{site.uri.public}}/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+        
+        {% if checkAccess('uri_zerg') %}
+            <a class="list-group-item" href="{{site.uri.public}}/zerg"><i class="sc sc-zerg fa fa-fw"></i> Zerg</a>
+        {% endif %}
+        {% if checkAccess('uri_users') %}
+            <a class="list-group-item" href="{{site.uri.public}}/users"><i class="fa fa-users fa-fw"></i> {{ translate("MENU_USERS") }}</a>
+        {% endif %}
+        {% if checkAccess('uri_group_users', { ('primary_group_id') : 4 }) %}
+            <a class="list-group-item" href="{{site.uri.public}}/users/zerglings"><i class="sc sc-zergling fa-fw"></i> Zerglings</a>
+        {% endif %}
+        {% if checkAccess('uri_site_settings') or checkAccess('uri_manage_groups') %}
+        <div class="list-group-item-subcontainer">
+            <a class="list-group-item" data-toggle="collapse"
+			data-parent="#side-menu" href="#submenu1"
+			aria-expanded="false" aria-controls="submenu1"
+		    role="tab" id="submenu1heading"
+			><i class="fa fa-wrench fa-fw"></i> {{ translate("MENU_CONFIGURATION") }}<span class="fa fa-arrow-left"></span></a>
+            <div class="nav list-group collapse" role="tabpanel" aria-labelledby="submenu1heading" id="submenu1">
+                {% if checkAccess('uri_site_settings') %}
+                    <a class="list-group-item" href="{{site.uri.public}}/config/settings"><i class="fa fa-globe fa-fw"></i> {{ translate("MENU_SITE_SETTINGS") }}</a>
+                {% endif %}
+                {% if checkAccess('uri_manage_groups') %}
+                    <a class="list-group-item" href="{{site.uri.public}}/groups"><i class="fa fa-tags fa-fw"></i> {{ translate("MENU_GROUPS") }}</a>
+                {% endif %}
+                {% if checkAccess('uri_site_settings') %}
+                    <a class="list-group-item" href="{{site.uri.public}}/menus-maker"><i class="fa fa-list-alt fa-fw"></i> Menus Maker</a>
+                {% endif %}
+            </div>
+            <!-- /.nav-second-level -->
+        </div>
+        {% endif %}
+    </div>
+</div>
+<!-- /.sidebar-collapse -->

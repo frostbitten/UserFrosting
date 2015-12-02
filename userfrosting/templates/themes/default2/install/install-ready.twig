@@ -1,0 +1,41 @@
+{% extends "layouts/layout-simple.twig" %}
+
+{# Set page properties (page.*) here. #}
+{% block page %}
+    {# By putting this in a special block, we ensure that it will be set AFTER the default values are set in the parent template, 
+    but BEFORE the page itself is rendered. #}    
+    {% set page = page | merge({
+        "title"       : "Installation",
+        "description" : "Installation page for UserFrosting"
+    }) %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class = "m-t text-center">Congratulations.</h1>
+			<h3 class="text-muted text-center">UserFrosting is ready to rock.</h3>
+        <br>
+        <div class="row match-heights-row" data-match-heights-targets=".match">
+            <div class="col-md-6 card match" style="
+					min-height: 300px;
+					background-image: url('{{site.uri.image}}/install-ready.jpg');
+					background-size: cover;
+					background-position: 50% 50%;">
+            </div>
+            <div class="col-md-6 ">
+				<div class="match">
+					{% for message in messages %}
+					  <div class="card card-block list-group-item-{{message.class}}">
+						<h4 class="card-title">{{message.title | raw}}</h4>
+						<p class="card-text">{{message.message | raw}}</p>
+					  </div>
+					{% endfor %}
+			    </div>
+                <div class="card m-t card-block bg-default text-center">
+                    <p class="h3">Next Step</p>
+                    <a href="{{site.uri.public}}/install/master" class="btn btn-lg btn-success">Create Master Account <i class='fa fa-angle-right'></i></a>
+                </div>
+			</div>
+        </div>
+    </div> <!-- /container -->
+{% endblock %}

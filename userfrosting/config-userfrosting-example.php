@@ -66,10 +66,13 @@
             'user_id_master' => 1,
             'theme-root'     => "root",
             'min_includes_externals'     => false, //set to true if the order of external resources is important
-            'custom-commons-map' =>
-                [ // replaces 'theme-base'
-                    "default"     => ["common","default"]
-                ]
+            'custom-commons-map' => [ 
+				"default"     => ["common","default"],  // replaces 'theme-base'
+				"nyx2"		  => ["common2","default2"],
+				"default2"		  => ["common2","default2"],
+				"common2"		  => ["common2","default2"],
+				"root2"		  => ["common2","default2"]
+			]
         ]);
     });
 
