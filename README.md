@@ -10,7 +10,7 @@ Added:
 * jQuery Match Heights
 * Tether
 * Tether Drop
-* Font Awesome 4.5
+* Font Awesome 4.5 (updated from 4.3)
 
 Removed:
 * Select 2
