@@ -1,5 +1,9 @@
 # UserFrosting v0.3.1 fork: bleeding edge
 
+This fork aims to get people ready for bootstrap 4, whenever that comes out. There are big differences so an early start may prove the best bet for you! Note that both bootstrap 4 and this fork are both incomplete. There are classes in bootstrap4 that should exist but don't... yet. I have filled some of the gaps myself but I am sure they will be covered in the full release of BS4. Feel free to report any of these gaps here and we can fill them. As for the layouts.. they are mostly complete. Small things here and there haven't been converted to the bootstrap 4 format and will behave akwardly, but those are few and far between.
+
+Download, start playing around in the templates, and enjoy!
+
 Added:
 * Bootstrap 4
 * jQuery 3
@@ -12,10 +16,12 @@ Removed:
 * Select 2
 * Bootstrap Radio
 
-**These changes only affect bootstrap 4 templates. The original resources for the default, nyx, and root themes remain untouched.**
+**These changes only affect bootstrap 4 templates.
+The original resources for the default, nyx, and root themes remain untouched.**
 
 Todo:
 * Finish updating form feedbacks
+* Edit dashboard alert's list of resources to current
 * Allow page container to be fluid via an option
 * Sass the css
 
