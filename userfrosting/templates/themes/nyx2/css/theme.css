@@ -313,7 +313,7 @@ body .drop-element.drop-theme-arrows-bounce .drop-content {padding:0}
     border: none;
 }
 .navbar-userfrosting .sidebar .list-group-item.active {
-    background-color: #eee;
+    background-color: rgba(238, 238, 238, 0.09);
 }
 
 .navbar-userfrosting .sidebar .nav-second-level li,
