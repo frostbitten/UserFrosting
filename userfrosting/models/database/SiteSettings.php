@@ -28,14 +28,14 @@ use \Illuminate\Database\Capsule\Manager as Capsule;
  * @property int minify_css 0|1 Specify whether to use concatenated, minified CSS (production) or raw CSS includes (dev).
  * @property int minify_js 0|1 Specify whether to use concatenated, minified JS (production) or raw JS includes (dev).
  * @property string version The current version of UserFrosting.
- * @property string author The author of the site.  Will be used in the site's author meta tag.  
+ * @property string author The author of the site.  Will be used in the site's author meta tag.
  */
-class SiteSettings extends UFModel {    
+class SiteSettings extends UFModel {
     /**
      * @var string The id of the table for the current model.
-     */ 
-    protected static $_table_id = "configuration";   
-    
+     */
+    protected static $_table_id = "configuration";
+
     /**
      * @var array An array of UF environment variables.  Should be read-only.
      */
@@ -43,17 +43,17 @@ class SiteSettings extends UFModel {
 
     /**
      * @var array A list of plugin names => arrays of settings for that plugin.  The core plugin is "userfrosting".
-     */    
+     */
     protected $_settings;
-    
+
     /**
      * @var array A list of plugin names => arrays of descriptions for that plugin.  The core plugin is "userfrosting".
-     */ 
+     */
     protected $_descriptions;
-    
+
     /**
      * @var array A list of settings that have been registered to appear in the site settings interface.
-     */ 
+     */
     protected $_settings_registered;
 
     /**
@@ -63,43 +63,43 @@ class SiteSettings extends UFModel {
      * @param array $settings the default settings to use, if they can't be retrieved from the DB.
      * @param array $descriptions the default descriptions to use, if they can't be retrieved from the DB.
      */
-    public function __construct($settings = [], $descriptions = []) {        
+    public function __construct($settings = [], $descriptions = []) {
         $table_schema = Database::getSchemaTable(static::$_table_id);
         $this->table = $table_schema->name;
-        $this->fillable = $table_schema->columns;        
-        
+        $this->fillable = $table_schema->columns;
+
         // Initialize UF environment
         $this->initEnvironment();
-        
+
         // Set default settings first
         $this->_settings = $settings;
         $this->_descriptions = $descriptions;
-        
+
         // Now, try to load settings from database if possible
         try {
             $results = $this->fetchSettings();
             // Merge, replacing default settings with DB settings as necessary.
             $this->_settings = array_replace_recursive($this->_settings, $results['settings']);
             $this->_descriptions = array_replace_recursive($this->_descriptions, $results['descriptions']);
-            
+
             // If there are settings in this object that are not present in the database, go ahead and store them to the DB.
             if (!$this->isConsistent()){
                 $this->store();
-            }            
+            }
         } catch (\PDOException $e){
             error_log("The configuration table could not be loaded.  Falling back to default configuration settings.");
         }
     }
-    
+
     /**
      * Determine whether or not all settings defined in this object are present in the database.
      *
      * @return boolean true if the table exists and all keys (core userfrosting and plugins) are defined in the table, false otherwise.
      */
     public function isConsistent(){
-        
+
         $table_exists = count(static::queryBuilder()->select("SHOW TABLES LIKE '{$this->table}'")) > 0;
-        
+
         if (!$table_exists){
             return false;
         }
@@ -117,7 +117,7 @@ class SiteSettings extends UFModel {
         }
         return true;
     }
-    
+
     /**
      * Fetch the settings from the database.
      *
@@ -125,7 +125,7 @@ class SiteSettings extends UFModel {
      */
     public function fetchSettings(){
         $rows = static::queryBuilder()->get();
-                  
+
         $results = [];
         $results['settings'] = [];
         $results['descriptions'] = [];
@@ -138,23 +138,23 @@ class SiteSettings extends UFModel {
                 $results['settings'][$plugin] = [];
                 $results['descriptions'][$plugin] = [];
             }
-                        
+
             $results['settings'][$plugin][$name] = $value;
-            $results['descriptions'][$plugin][$name] = $description;          
+            $results['descriptions'][$plugin][$name] = $description;
         }
         return $results;
     }
-    
+
     /**
      * Initialize the environment (non-persistent) variables for the app.  This includes things like the public root URL, css URLs, etc.
      *
-     */    
+     */
     private function initEnvironment(){
         $this->_environment = [
             'uri' => Database::$app->config('uri')
         ];
     }
-    
+
     /**
      * Magic isset to determine if a particular setting is defined in the environment or core userfrosting settings.
      * This does not check plugin settings or descriptions.
@@ -168,7 +168,7 @@ class SiteSettings extends UFModel {
         else
             return false;
     }
-    
+
     /**
      * Magic setter to set the value of a core userfrosting setting.
      * This does not allow you to set the setting description.  To do that, you must use `set`.
@@ -177,7 +177,7 @@ class SiteSettings extends UFModel {
      * @param string $value The value to assign the setting.
      */
     public function __set($name, $value){
-        return $this->set('userfrosting', $name, $value);   
+        return $this->set('userfrosting', $name, $value);
     }
 
     /**
@@ -205,8 +205,8 @@ class SiteSettings extends UFModel {
      *
      * @param string $name The name of the setting.
      * @param string $plugin The plugin scope of this setting.  Defaults to "userfrosting".
-     * @throws Exception The value does not exist for this plugin.     
-     */  
+     * @throws Exception The value does not exist for this plugin.
+     */
     public function get($name, $plugin = "userfrosting"){
         if (isset($this->_settings[$plugin]) && isset($this->_settings[$plugin][$name])){
             return $this->_settings[$plugin][$name];
@@ -214,14 +214,14 @@ class SiteSettings extends UFModel {
             throw new \Exception("The value '$name' does not exist in the settings for plugin '$plugin'.");
         }
     }
-    
+
     /**
      * Get the description persistent setting value for a particular plugin.  Throws an exception if the plugin or description does not exist.
      *
      * @param string $name The name of the setting.
      * @param string $plugin The plugin scope of this setting.  Defaults to "userfrosting".
-     * @throws Exception The description does not exist for this value of the specified plugin.     
-     */ 
+     * @throws Exception The description does not exist for this value of the specified plugin.
+     */
     public function getDescription($name, $plugin = "userfrosting"){
         if (isset($this->_settings[$plugin]) && isset($this->_descriptions[$plugin][$name])){
             return $this->_descriptions[$plugin][$name];
@@ -229,13 +229,13 @@ class SiteSettings extends UFModel {
             throw new \Exception("The value '$name' does not exist in the setting descriptions for plugin '$plugin'.");
         }
     }
-    
+
     /**
      * Get a site environment (non-persistent) variable.  Throws an exception if the variable does not exist.
      *
      * @param string $name The name of the site environment variable.
-     * @throws Exception The specified environment variable does not exist. 
-     */  
+     * @throws Exception The specified environment variable does not exist.
+     */
     public function getEnvironment($name){
         if (isset($this->_environment[$name])){
             return $this->_environment[$name];
@@ -243,32 +243,32 @@ class SiteSettings extends UFModel {
             throw new \Exception("The value '$name' does not exist in the settings environment.");
         }
     }
-    
+
     /**
      * Create/update a setting value.  If it exists, update, otherwise, create.  If updating, then a value or description set to null tells it to remain the same.  If creating, a value or description of null sets the field to an empty string.
      *
      * @param string $plugin The name of the plugin to associate this setting with.
      * @param string $name The name of the setting.
-     */ 
+     */
     public function set($plugin, $name, $value = null, $description = null){
         if (!isset($this->_settings[$plugin])){
             $this->_settings[$plugin] = [];
             $this->_descriptions[$plugin] = [];
         }
         if ($value !== null) {
-            $this->_settings[$plugin][$name] = $value; 
+            $this->_settings[$plugin][$name] = $value;
         } else {
             if (!isset($this->_settings[$plugin][$name]))
-                $this->_settings[$plugin][$name] = ""; 
+                $this->_settings[$plugin][$name] = "";
         }
         if ($description !== null) {
-            $this->_descriptions[$plugin][$name] = $description; 
+            $this->_descriptions[$plugin][$name] = $description;
         } else {
             if (!isset($this->_descriptions[$plugin][$name]))
-                $this->_descriptions[$plugin][$name] = ""; 
+                $this->_descriptions[$plugin][$name] = "";
         }
     }
-    
+
     /**
      * Register a setting to appear on the site settings page.
      *
@@ -283,37 +283,37 @@ class SiteSettings extends UFModel {
         // Get the array of settings & descriptions
         if (isset($this->_settings[$plugin])){
             $settings = $this->_settings[$plugin];
-            $descriptions = $this->_descriptions[$plugin];      
+            $descriptions = $this->_descriptions[$plugin];
         } else {
             throw new \Exception("The plugin '$plugin' does not have any site settings.  Be sure to add them first by calling set().");
         }
-        
+
         if (!isset($settings[$name])){
             throw new \Exception("The plugin '$plugin' does not have a value for '$name'.  Please add it first by calling set().");
         }
-        
+
         // Check type
         if (!in_array($type, ["readonly", "text", "toggle", "select"]))
             throw new \Exception("Type must be one of 'readonly', 'text', 'toggle', or 'select'.");
-            
+
         if (!isset($this->_settings_registered[$plugin]))
             $this->_settings_registered[$plugin] = [];
         if (!isset($this->_settings_registered[$plugin][$name]))
             $this->_settings_registered[$plugin][$name] = [];
-            
+
         $this->_settings_registered[$plugin][$name]['label'] = $label;
         $this->_settings_registered[$plugin][$name]['type'] = $type;
         $this->_settings_registered[$plugin][$name]['options'] = $options;
         $this->_settings_registered[$plugin][$name]['description'] = $descriptions[$name];
     }
-    
+
     /**
      * Get an array of site settings that have been registered for display on the site settings page.
      *
      * The result is a multidimensional array indexed first by plugin name, then by setting name.  Each setting name will then have an array containing values for "value", "label", "type", "options", and "description".
      * For example, $settings['userfrosting']['site_title']['value'] = "UserFrosting".
      * @return array The array of site settings.
-     */   
+     */
     public function getRegisteredSettings(){
         foreach ($this->_settings_registered as $plugin => $setting){
             foreach ($setting as $name => $params){
@@ -322,12 +322,12 @@ class SiteSettings extends UFModel {
         }
         return $this->_settings_registered;
     }
-    
+
     /**
      * Get an array of available locales for UserFrosting by scanning the path specified in $app->config('locales.path').
      *
      * @return array An array containing the names of all available locales (e.g. "en_EN", "es_ES", etc.)
-     */  
+     */
     public function getLocales(){
     	$directory = static::$app->config('locales.path');
         $languages = glob($directory . "/*.php");
@@ -343,7 +343,7 @@ class SiteSettings extends UFModel {
      * Get an array of available themes for UserFrosting by scanning the path specified in $app->config('themes.path').
      *
      * @return array An array containing the names of all available themes (e.g. "default", "root", etc.)
-     */     
+     */
     public function getThemes(){
     	$directory = static::$app->config('themes.path');
         $themes = glob($directory . "/*", GLOB_ONLYDIR);
@@ -354,12 +354,12 @@ class SiteSettings extends UFModel {
         }
         return $results;
     }
-    
+
     /**
      * Get an array of installed plugins by scanning the path specified in $app->config('plugins.path').
      *
      * @return array An array containing the names of all available themes (e.g. "oauth", "datatables", etc.)
-     */      
+     */
     public function getPlugins(){
     	$directory = static::$app->config('plugins.path');
         $themes = glob($directory . "/*", GLOB_ONLYDIR);
@@ -370,12 +370,12 @@ class SiteSettings extends UFModel {
         }
         return $results;
     }
-    
+
     /**
      * Get an array of system information for UserFrosting.
      *
      * @return array An array containing a list of information, such as software version, application path, etc.
-     */ 
+     */
     public function getSystemInfo(){
         $results = [];
         $results['UserFrosting Version'] = $this->version;
@@ -390,13 +390,13 @@ class SiteSettings extends UFModel {
         $results['Document Root'] = $this->uri['public'];
         return $results;
     }
-    
+
     /**
      * Get the PHP error log as an array of lines.
      *
      * @param int $lines the number of lines to display.  Set to `null` to display all lines.
      * @return array An array containing 'path', which is the path of the PHP error log, and 'messages', which is an array of error messages sorted with the newest messages first.
-     */ 
+     */
     public function getLog($lines = null){
         // Check if error logging is enabled
         if (!ini_get("error_log")){
@@ -423,29 +423,29 @@ class SiteSettings extends UFModel {
             "messages"  => $messages
         ];
     }
-    
+
     /**
      * Store the site settings from this object to the database, inserting new records when necessary and updating existing records otherwise.
      *
      * @todo use Eloquent to make these queries database-agnostic
-     */ 
+     */
     public function save(array $options = []){
         // Get current values as stored in DB
         $db_settings = $this->fetchSettings();
-        
+
         $db = Capsule::connection()->getPdo();
-        
+
         $table = $this->table;
-        
+
         $stmt_insert = $db->prepare("INSERT INTO `$table`
             (plugin, name, value, description)
             VALUES (:plugin, :name, :value, :description);");
-        
+
         $stmt_update = $db->prepare("UPDATE `$table` SET
             value = :value,
-            description = :description 
+            description = :description
             WHERE plugin = :plugin and name = :name;");
-        
+
         // For each setting in this object, check if it exists in DB.  If it does not exist, add.  If it exists and is different from the current value, update.
         foreach ($this->_settings as $plugin => $setting){
             foreach ($setting as $name => $value){
@@ -462,7 +462,7 @@ class SiteSettings extends UFModel {
                 }
             }
         }
-        
-        return true;   
+
+        return true;
     }
 }

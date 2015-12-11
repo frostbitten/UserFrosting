@@ -11,19 +11,19 @@ use \Illuminate\Database\Capsule\Manager as Capsule;
  * Finally, this class is responsible for initializing the database during installation.
  * @package UserFrosting
  * @author Alex Weissman
- * @see http://www.userfrosting.com/tutorials/lesson-3-data-model/ 
+ * @see http://www.userfrosting.com/tutorials/lesson-3-data-model/
  */
 abstract class Database {
     /**
      * @var Slim The Slim app, containing configuration info
      */
     public static $app;
-    
+
     /**
      * @var array[DatabaseTable] An array of DatabaseTable objects representing the configuration of the database tables.
      */
     protected static $tables;
-    
+
     /**
      * Retrieve a DatabaseTable object based on its handle.
      *
@@ -37,49 +37,49 @@ abstract class Database {
         else
             throw new \Exception("There is no table with id '$id'.");
     }
-    
+
     /**
      * Register a DatabaseTable object with the Database, assigning it the specified handle.
      *
      * @param string $id the handle (id) of the table, which you may choose.
      * @param DatabaseTable $table the DatabaseTable to associate with this handle.
      * @return void
-     */    
+     */
     public static function setSchemaTable($id, $table){
         static::$tables[$id] = $table;
     }
-    
+
     /**
      * Set the name for a DatabaseTable that has been registered with the database.
      *
      * @param string $id the handle (id) of the table, as it was defined in the call to `setSchemaTable`.
      * @param string $name the new name for the DatabaseTable.
-     * @throws Exception there is no table associated with the specified handle.     
+     * @throws Exception there is no table associated with the specified handle.
      * @return void
-     */     
+     */
     public static function setTableName($id, $name){
         if (isset(static::$tables[$id])) {
             call_user_func_array([static::$tables[$id], "setName"], $name);
         } else
             throw new \Exception("There is no table with id '$id'.");
     }
-    
+
     /**
      * Add columns to a DatabaseTable that has been registered with the database.
      *
      * @param string $id the handle (id) of the table, as it was defined in the call to `setSchemaTable`.
      * @param string $column,... the new columns to add to the DatabaseTable.
-     * @throws Exception there is no table associated with the specified handle.     
+     * @throws Exception there is no table associated with the specified handle.
      * @return void
-     */     
+     */
     public static function addTableColumns($id){
         if (isset(static::$tables[$id])) {
             $columns = array_slice(func_get_args(), 1);
             call_user_func_array([static::$tables[$id], "addColumns"], $columns);
         } else
             throw new \Exception("There is no table with id '$id'.");
-    }    
-    
+    }
+
     /**
      * Test whether a DB connection can be established.
      *
@@ -95,7 +95,7 @@ abstract class Database {
         }
         return true;
     }
-    
+
     /**
      * Get an array of key-value pairs containing basic information about this database.
      *
@@ -120,20 +120,20 @@ abstract class Database {
         $results['table_prefix'] = static::$app->config('db')['db_prefix'];
         return $results;
     }
-    
+
     /**
      * Get an array of the names of tables that exist in the database.
      *
      * Looks for tables with the following handles: user, group, group_user, authorize_group, authorize_user
      * @return array[string] the names of the UF tables that actually exist.
-     */ 
+     */
     public static function getCreatedTables(){
         if (!static::testConnection())
             return [];
-        
+
         $connection = Capsule::connection();
         $results = [];
-        
+
         $test_list = [
             static::getSchemaTable('user')->name,
             static::getSchemaTable('user_event')->name,
@@ -143,7 +143,7 @@ abstract class Database {
             static::getSchemaTable('authorize_group')->name,
             static::$app->remember_me_table['tableName']
         ];
-        
+
         foreach ($test_list as $table){
             try {
                 $stmt = $connection->select("SELECT 1 FROM `$table` LIMIT 1;");
@@ -152,18 +152,18 @@ abstract class Database {
             }
             $results[] = $table;
         }
-        
+
         return $results;
     }
-    
+
     /**
      * Set up the initial tables for the database.
      *
      * Creates all tables, and loads the configuration table with the default config data.  Also, sets install_status to `pending`.
-     */   
+     */
     public static function install(){
         $connection = Capsule::connection();
-        
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('configuration')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `plugin` varchar(50) NOT NULL COMMENT 'The name of the plugin that manages this setting (set to ''userfrosting'' for core settings)',
@@ -172,7 +172,7 @@ abstract class Database {
             `description` text NOT NULL COMMENT 'A brief description of this setting.',
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='A configuration table, mapping global configuration options to their values.' AUTO_INCREMENT=1 ;");
-            
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('authorize_group')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `group_id` int(10) unsigned NOT NULL,
@@ -180,7 +180,7 @@ abstract class Database {
             `conditions` text NOT NULL COMMENT 'The conditions under which members of this group have access to this hook.',
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
-          
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('authorize_user')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
@@ -188,7 +188,7 @@ abstract class Database {
             `conditions` text NOT NULL COMMENT 'The conditions under which the user has access to this action.',
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
-              
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('group')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `name` varchar(150) NOT NULL,
@@ -200,15 +200,15 @@ abstract class Database {
             `icon` varchar(100) NOT NULL DEFAULT 'fa fa-user' COMMENT 'The icon representing primary users in this group.',
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
-          
-          
+
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('group_user')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
             `group_id` int(10) unsigned NOT NULL,
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Maps users to their group(s)' AUTO_INCREMENT=1 ;");
-          
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('user')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_name` varchar(50) NOT NULL,
@@ -226,8 +226,8 @@ abstract class Database {
             `password` varchar(255) NOT NULL,
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
-        
-        $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('user_event')->name . "` ( 
+
+        $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::getSchemaTable('user_event')->name . "` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
             `event_type` varchar(255) NOT NULL COMMENT 'An identifier used to track the type of event.',
@@ -235,25 +235,25 @@ abstract class Database {
             `description` text NOT NULL,
             PRIMARY KEY (`id`)
           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;");
-        
+
         $connection->statement("CREATE TABLE IF NOT EXISTS `" . static::$app->remember_me_table['tableName'] . "` (
             `user_id` int(11) NOT NULL,
             `token` varchar(40) NOT NULL,
             `persistent_token` varchar(40) NOT NULL,
             `expires` datetime NOT NULL
-          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"); 
-        
-        // Setup initial configuration settings        
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        // Setup initial configuration settings
         static::$app->site->install_status = "pending";
         static::$app->site->root_account_config_token = md5(uniqid(mt_rand(), false));
-        static::$app->site->store();        
-        
+        static::$app->site->store();
+
         // Setup default groups.  TODO: finish Group API so they can be created through objects
         $connection->insert("INSERT INTO `" . static::getSchemaTable('group')->name . "` (`name`, `is_default`, `can_delete`, `theme`, `landing_page`, `new_user_title`, `icon`) VALUES
           ('User', " . GROUP_DEFAULT_PRIMARY . ", 0, 'default', 'dashboard', 'New User', 'fa fa-user'),
           ('Administrator', " . GROUP_NOT_DEFAULT . ", 0, 'nyx', 'dashboard', 'Brood Spawn', 'fa fa-flag'),
-          ('Zerglings', " . GROUP_NOT_DEFAULT . ", 1, 'nyx', 'dashboard', 'Tank Fodder', 'sc sc-zergling');");        
-    
+          ('Zerglings', " . GROUP_NOT_DEFAULT . ", 1, 'nyx', 'dashboard', 'Tank Fodder', 'sc sc-zergling');");
+
         // Setup default authorizations
         $connection->insert("INSERT INTO `" . static::getSchemaTable('authorize_group')->name . "` (`group_id`, `hook`, `conditions`) VALUES
           (1, 'uri_dashboard', 'always()'),
@@ -264,7 +264,7 @@ abstract class Database {
           (2, 'update_account_setting', '!in_group(user.id,2)&&in(property,[\"email\",\"display_name\",\"title\",\"locale\",\"flag_password_reset\",\"flag_enabled\"])'),
           (2, 'view_account_setting', 'in(property,[\"user_name\",\"email\",\"display_name\",\"title\",\"locale\",\"flag_enabled\",\"groups\",\"primary_group_id\"])'),
           (2, 'delete_account', '!in_group(user.id,2)'),
-          (2, 'create_account', 'always()');");    
+          (2, 'create_account', 'always()');");
     }
-    
+
 }

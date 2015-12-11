@@ -30,7 +30,7 @@ class GroupLoader {
             // Fetch by some other column name
             return ( Group::where($name, $value)->first() ? true : false );
     }
-   
+
     /**
      * Fetch a single group based on the value of a given column.
      *
@@ -60,12 +60,12 @@ class GroupLoader {
             $result = Group::all();
         else
             $result = Group::where($name, $value)->get();
-        
-        $groups = [];  
+
+        $groups = [];
         foreach ($result as $group){
             $groups[$group->id] = $group;
         }
         return $groups;
     }
-    
+
 }

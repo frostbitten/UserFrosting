@@ -13,17 +13,17 @@ namespace UserFrosting;
  * @see http://www.userfrosting.com/tutorials/lesson-3-data-model/
  */
 class DatabaseTable {
-    
+
     /**
      * @var string The name of the table.
      */
     protected $_name;
-    
+
     /**
      * @var array[string] A list of the allowed columns for this table.  The `id` column is already assumed.
      */
-    protected $_columns; 
-    
+    protected $_columns;
+
     /**
      * Create a new DatabaseTable instance.
      *
@@ -37,7 +37,7 @@ class DatabaseTable {
         $this->_name = $name;
         $this->_columns = $columns;
     }
-    
+
     /**
      * Add additional columns to this DatabaseTable instance.
      *
@@ -49,24 +49,24 @@ class DatabaseTable {
         $this->_columns = $this->_columns + $new_columns;
         return $this;
     }
-    
+
     /**
      * Set the table name for this DatabaseTable instance.
      *
      * @param string $name the new name for this DatabaseTable.
      * @return void
-     */    
+     */
     public function setName($name){
         $this->_name = $name;
     }
-    
+
     /**
      * Magic getter for DatabaseTable properties.
      *
      * @param string $name the property to return (either 'name' or 'columns').
      * @return string|array the table name, or an array containing the table columns
      * @throws Exception attempted to access a nonexistent property.
-     */      
+     */
     public function __get($name){
         if ($name == "name"){
             return $this->_name;
@@ -76,5 +76,5 @@ class DatabaseTable {
             throw new \Exception("The value '$name' does not exist in the table configuration object.");
         }
     }
- 
+
 }

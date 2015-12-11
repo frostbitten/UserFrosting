@@ -13,8 +13,8 @@ namespace UserFrosting;
  * @see http://www.userfrosting.com/tutorials/lesson-3-data-model/
  * @deprecated deprecated since version 0.3.1
  */
-class UserLoader { 
-    
+class UserLoader {
+
     /**
      * Determine if a user exists based on the value of a given column.
      *
@@ -30,7 +30,7 @@ class UserLoader {
             // Fetch by some other column name
             return ( User::where($name, $value)->first() ? true : false );
     }
-   
+
     /**
      * Fetch a single user based on the value of a given column.
      *
@@ -47,7 +47,7 @@ class UserLoader {
             // Fetch by some other column name
             return User::where($name, $value)->first();
     }
-    
+
     /**
      * Fetch a list of users based on the value of a given column.  Returns empty array if no match is found.
      *
@@ -60,7 +60,7 @@ class UserLoader {
             $result = User::all();
         else
             $result = User::where($name, $value)->get();
-            
+
         $users = [];
         foreach ($result as $user){
             $users[$user->id] = $user;
